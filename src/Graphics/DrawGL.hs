@@ -1,5 +1,8 @@
+{-#LANGUAGE MultiParamTypeClasses, FlexibleContexts, FlexibleInstances#-}
 module Graphics.DrawGL where
 
+import Data.Function (on)
+import Control.Monad
 import Control.Arrow
 import qualified Graphics.Rendering.OpenGL as GL
 
@@ -22,6 +25,21 @@ type CombinedTransform = ([Vertex], [Color]) -> ([Vertex],[Color])
 type VertexType = Float
 newtype Vertex = Vertex { fromVertex :: (VertexType, VertexType) }
 newtype Color = Color { fromColor :: (Float,Float,Float,Float) }
+
+class Concat a b where
+    (<++>) :: Concat a b => a -> a -> b
+
+instance Concat Vertices Vertices where
+    (<++>) = VertexSum
+
+instance Concat [Vertex] Vertices where
+    (<++>) = VertexSum `on` VertexList
+
+instance Concat Shape Shape where
+    (<++>) = TwoShapes
+
+instance Concat [Shape] Shape where
+    (<++>) = TwoShapes `on` ManyShapes
 
 replaceLeft :: ([a] -> [b]) -> ([c],[a]) -> ([b],[a])
 replaceLeft f = snd >>> f &&& id
