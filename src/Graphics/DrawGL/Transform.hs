@@ -26,6 +26,9 @@ f ** g = normalizeTransform f . normalizeTransform g
 ($$) :: Transform t => t -> Shape -> Shape
 ($$) = normalizeTransform
 
+(>>) :: Transform t => Shape -> t -> Shape
+(>>) = flip normalizeTransform
+
 transformVertices :: (Vertex -> Vertex) -> (Shape -> Shape)
 transformVertices f = Transformed (second f)
 
