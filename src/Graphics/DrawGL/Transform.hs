@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 module Graphics.DrawGL.Transform where
 
+import Data.Function (on)
 import Control.Arrow
 
 import Graphics.DrawGL.Internal
@@ -18,6 +19,12 @@ instance Transform (ColoredVertex -> ColoredVertex) where
 
 instance Transform (Shape -> Shape) where
     normalizeTransform = ($)
+
+(**) :: (Transform f, Transform g) => f -> g -> (Shape -> Shape)
+f ** g = normalizeTransform f . normalizeTransform g
+
+($$) :: Transform t => t -> Shape -> Shape
+($$) = normalizeTransform
 
 transformVertices :: (Vertex -> Vertex) -> (Shape -> Shape)
 transformVertices f = Transformed (second f)
