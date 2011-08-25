@@ -1,4 +1,4 @@
-{-#LANGUAGE MultiParamTypeClasses, FlexibleContexts, FlexibleInstances#-}
+{-# LANGUAGE MultiParamTypeClasses, FlexibleContexts, FlexibleInstances #-}
 
 module Graphics.DrawGL.Concat where
 
@@ -7,7 +7,7 @@ import Graphics.DrawGL.Internal
 import Data.Function (on)
 
 class Concat a b c where
-    (<++>) :: Concat a b c => a -> b -> c
+    (<++>) :: a -> b -> c
 
 instance Concat Vertices Vertices Vertices where
     (<++>) = VertexSum
