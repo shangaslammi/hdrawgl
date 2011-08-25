@@ -22,13 +22,13 @@ instance Concat [Vertex] [Vertex] Vertices where
     (<++>) = VertexSum `on` VertexList
 
 instance Concat Shape Shape Shape where
-    (<++>) = TwoShapes
+    (<++>) = ShapeSum
 
 instance Concat Shape [Shape] Shape where
-    a <++> b = TwoShapes a $ ManyShapes b
+    a <++> b = ShapeSum a $ ShapeList b
 
 instance Concat [Shape] Shape Shape where
-    a <++> b = TwoShapes (ManyShapes a) b
+    a <++> b = ShapeSum (ShapeList a) b
 
 instance Concat [Shape] [Shape] Shape where
-    (<++>) = TwoShapes `on` ManyShapes
+    (<++>) = ShapeSum `on` ShapeList
