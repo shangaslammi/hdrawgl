@@ -4,6 +4,8 @@ import Control.Monad
 import Control.Arrow
 import qualified Graphics.Rendering.OpenGL as GL
 
+import Graphics.DrawGL.Types
+
 data Shape
      = Shape ShapeForm Vertices
      | ShapeSum Shape Shape
@@ -13,15 +15,6 @@ data Shape
 data Vertices
     = VertexList [Vertex]
     | VertexSum Vertices Vertices
-
-
-type ColoredVertex = (Color, Vertex)
-type ShapeForm = GL.PrimitiveMode
-type VertexTransform = ColoredVertex -> ColoredVertex
-
-type VertexType = Float
-newtype Vertex = Vertex { fromVertex :: (VertexType, VertexType) }
-newtype Color = Color { fromColor :: (Float,Float,Float,Float) }
 
 
 drawShape :: Shape -> IO ()
