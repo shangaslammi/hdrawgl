@@ -1,0 +1,19 @@
+Name:               drawgl
+Version:            0.1
+Synopsis:           Utility library for OpenGL graphics
+Description:        Utility library for OpenGL graphics
+License:            MIT
+License-file:       LICENSE
+Author:             Sami Hangaslammi
+Maintainer:         Sami Hangaslammi <shang@iki.fi>
+Build-Type:         Simple
+Cabal-Version:      >=1.2
+
+Hs-Source-Dirs:     src
+Exposed-modules:    Graphics.DrawGL,
+                    Graphics.DrawGL.Internal,
+                    Graphics.DrawGL.Primitives,
+                    Graphics.DrawGL.Transform,
+                    Graphics.DrawGL.Types,
+                    Graphics.DrawGL.Util
+Build-Depends:      base >= 4, OpenGL >= 2.2.3.0

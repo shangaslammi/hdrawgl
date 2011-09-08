@@ -3,6 +3,7 @@
 module Graphics.DrawGL.Concat where
 
 import Graphics.DrawGL.Internal
+import Graphics.DrawGL.Types
 
 import Data.Function (on)
 
