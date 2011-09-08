@@ -2,6 +2,7 @@
 module Graphics.DrawGL.Color where
 
 import Graphics.DrawGL.Types
+import Graphics.DrawGL.Util
 
 color :: Color -> ColoredVertex -> ColoredVertex
 color c (_,v) = (c,v)
