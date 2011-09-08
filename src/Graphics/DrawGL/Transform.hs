@@ -5,8 +5,7 @@ import Data.Function (on)
 import Control.Arrow
 
 import Graphics.DrawGL.Internal
-
-type Angle = Float
+import Graphics.DrawGL.Types
 
 class Transform t where
     normalizeTransform :: t -> Shape -> Shape
@@ -32,9 +31,11 @@ f ** g = normalizeTransform f . normalizeTransform g
 transformVertices :: (Vertex -> Vertex) -> (Shape -> Shape)
 transformVertices f = Transformed (second f)
 
-rotate :: Angle -> Vertex -> Vertex
+rotate :: Angle -> (Vertex -> Vertex)
 rotate a (Vertex (x,y)) = Vertex (x', y') where
     x' = x * cos a' - y * sin a'
     y' = x * sin a' + y * cos a'
     a' = 2 * pi * a
 
+translate :: (VertexType, VertexType) -> (Vertex -> Vertex)
+translate (tx, ty) (Vertex (x,y)) = Vertex (x+tx, y+ty)
