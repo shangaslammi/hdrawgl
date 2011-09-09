@@ -13,10 +13,12 @@ type Radius = VertexType
 type Sides  = Int
 type Angle  = Float
 
-type ColoredVertex = (Color, Vertex)
-type ShapeForm = GL.PrimitiveMode
-type VertexTransform = ColoredVertex -> ColoredVertex
+type ColoredVertex   = (Color, Vertex)
+type TexturedVertex  = (TexCoord, ColoredVertex)
+type ShapeForm       = GL.PrimitiveMode
+type Texture         = GL.TextureObject
 
-newtype Vertex = Vertex { fromVertex :: (VertexType, VertexType) }
-newtype Color = Color { fromColor :: (Float,Float,Float,Float) }
+newtype TexCoord = TexCoord { fromTexCoord :: Point }
+newtype Vertex   = Vertex   { fromVertex   :: Point }
+newtype Color    = Color    { fromColor    :: (Float,Float,Float,Float) }
 

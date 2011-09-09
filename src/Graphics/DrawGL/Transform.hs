@@ -8,13 +8,25 @@ import Graphics.DrawGL.Internal
 import Graphics.DrawGL.Types
 
 class Transform t where
-    normalizeTransform :: t -> Shape -> Shape
+    normalizeTransform :: t -> (Shape -> Shape)
+
+class VertexTransform v where
+    forTextured :: v -> (TexturedVertex -> TexturedVertex)
+
+instance VertexTransform (Vertex -> Vertex) where
+    forTextured = second . second
+
+instance VertexTransform (ColoredVertex -> ColoredVertex) where
+    forTextured = second
+
+instance VertexTransform (TexturedVertex -> TexturedVertex) where
+    forTextured = id
 
 instance Transform (Vertex -> Vertex) where
-    normalizeTransform = transformVertices
+    normalizeTransform = Transformed . forTextured
 
 instance Transform (ColoredVertex -> ColoredVertex) where
-    normalizeTransform f = Transformed f
+    normalizeTransform = Transformed . forTextured
 
 instance Transform (Shape -> Shape) where
     normalizeTransform = ($)
@@ -27,9 +39,6 @@ f ** g = normalizeTransform f . normalizeTransform g
 
 (>>) :: Transform t => Shape -> t -> Shape
 (>>) = flip normalizeTransform
-
-transformVertices :: (Vertex -> Vertex) -> (Shape -> Shape)
-transformVertices f = Transformed (second f)
 
 rotate :: Angle -> (Vertex -> Vertex)
 rotate a (Vertex (x,y)) = Vertex (x', y') where
