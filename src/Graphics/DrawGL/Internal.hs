@@ -45,7 +45,6 @@ instance ToTextured ColoredVertex where
 instance ToTextured Vertex where
     toTextured = toTextured . (,) defaultColor
 
-
 drawShape :: Shape -> IO ()
 drawShape (ShapeSum a b)   = drawShape a >> drawShape b
 drawShape (ShapeList ss)   = mapM_ drawShape ss
@@ -56,7 +55,7 @@ drawShapeT :: (TexturedVertex -> TexturedVertex) -> Shape -> IO ()
 drawShapeT ct (ShapeSum a b)    = drawShapeT ct a >> drawShapeT ct b
 drawShapeT ct (ShapeList ss)    = mapM_ (drawShapeT ct) ss
 drawShapeT ct (Transformed t s) = drawShapeT (ct . t) s
-drawShapeT ct (Shape f vs)      = renderPrimitive f $ shapeOps vs where
+drawShapeT ct (Shape f vs)      = shapeOps vs where
     shapeOps (Plain vs) = do
         vertexColor defaultColor
         disableTexturing
@@ -71,7 +70,8 @@ drawShapeT ct (Shape f vs)      = renderPrimitive f $ shapeOps vs where
         drawOps vs
 
     drawOps :: ToTextured t => [t] -> IO ()
-    drawOps             = mapM_ vertexOps . map (ct . toTextured)
+    drawOps = renderPrimitive f . mapM_ vertexOps . map (ct . toTextured)
+
     vertexOps (t,(c,v)) = case vs of
         (Plain _)      -> vertexPos v
         (Colored _)    -> vertexColor c >> vertexPos v
